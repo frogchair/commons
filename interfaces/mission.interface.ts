@@ -1,10 +1,10 @@
 export interface Mission {
-  id: number;
-  background: string;
-  code: string;
-  completed: boolean;
-  missions: Mission[];
-  rewardPreview: string;
-  steps: number;
-  title: string;
+  id: number
+  code: string
+  title: string
+  steps: number
+  background?: string
+  completed: boolean
+  rewardPreview?: string
+  missions?: Mission[]
 }

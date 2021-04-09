@@ -1,4 +1,4 @@
-export interface IPlayer {
+export interface Player {
   id: number;
   name: string;
   jwtToken: string;
