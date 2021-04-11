@@ -4,7 +4,12 @@ export interface Mission {
   title: string
   steps: number
   background?: string
-  completed: boolean
   rewardPreview?: string
+  status: MissionStatus
   missions?: Mission[]
+}
+export enum MissionStatus {
+  completed = "completed",
+  open = "open",
+  locked = "locked"
 }

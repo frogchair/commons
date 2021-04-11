@@ -15,7 +15,7 @@ export interface Crown {
   amount: number;
 }
 export enum CrownType {
-  Gold,
-  Silver,
-  Bronze,
+  gold = "gold",
+  silver = "silver",
+  bronze = "bronze"
 }
