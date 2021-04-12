@@ -10,12 +10,14 @@ export interface Player {
   crowns: Crown[];
   pfpUrl: string;
 }
+
 export interface Crown {
   type: CrownType;
   amount: number;
 }
+
 export enum CrownType {
   gold = "gold",
   silver = "silver",
-  bronze = "bronze"
+  bronze = "bronze",
 }
