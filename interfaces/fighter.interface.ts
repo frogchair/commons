@@ -1,7 +1,7 @@
 import { Gear } from "./gear.interface";
 import { LeaderSkill, Skill } from "./skill.interface";
 
-export interface FighterStats {
+export interface Stats {
   hp: number;
   atk: number;
   def: number;
@@ -67,10 +67,10 @@ export interface DetailFighter extends BandFighter {
   currentXp: number;
   levelUpXp: number;
   locked: boolean;
-  baseStats: FighterStats;
+  baseStats: Stats;
   tribe: Tribe;
   class: Class;
-  edgeStats?: FighterStats;
+  edgeStats?: Stats;
   edgeBonus?: number;
   lore: string;
   skill: Skill;
@@ -81,6 +81,6 @@ export interface DetailFighter extends BandFighter {
 // battle view
 export interface BattleFighter extends Fighter {
   skill: Skill;
-  battleStats: FighterStats;
+  battleStats: Stats;
   battleCd: number;
 }
