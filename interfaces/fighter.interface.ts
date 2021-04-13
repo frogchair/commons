@@ -1,4 +1,3 @@
-import { Class, Rarity, Sign, Tribe } from "../enums/shared.enum";
 import { Gear } from "./gear.interface";
 import { LeaderSkill, Skill } from "./skill.interface";
 
@@ -8,6 +7,42 @@ export interface FighterStats {
   def: number;
   wis: number;
   agi: number;
+}
+
+export enum Tribe {
+  hemi = "hemi",
+  theri = "theri",
+  xana = "xana",
+}
+
+export enum Sign {
+  air = "air",
+  earth = "earth",
+  fire = "fire",
+  lightning = "lightning",
+  water = "water",
+}
+
+export enum Class {
+  champ = "champ",
+  guru = "guru",
+  rogue = "rogue",
+  scout = "scout",
+  warlock = "warlcok",
+}
+
+export enum Rarity {
+  common = "common",
+  uncommon = "uncommon",
+  rare = "rare",
+  epic = "epic",
+  legendary = "legendary",
+}
+
+export enum SkillLevel {
+  novice = "novice",
+  adept = "adept",
+  elite = "elite",
 }
 
 // home view
