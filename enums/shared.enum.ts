@@ -21,11 +21,11 @@ export enum Class {
 }
 
 export enum Rarity {
-  c = "c",
-  uc = "uc",
-  r = "r",
-  e = "e",
-  l = "l",
+  common = "common",
+  uncommon = "uncommon",
+  rare = "rare",
+  epic = "epic",
+  legendary = "legendary",
 }
 
 export enum skillLevel {
