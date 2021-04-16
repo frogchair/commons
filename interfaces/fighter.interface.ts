@@ -1,4 +1,6 @@
+import FighterFusion from "../classes/FighterFusion";
 import { Gear } from "./gear.interface";
+import { Player } from "./player.interface";
 import { LeaderSkill, Skill } from "./skill.interface";
 
 export interface Stats {
@@ -61,6 +63,7 @@ export enum Tier {
 export interface Fighter {
   id: number;
   imageUrl: string;
+  slot: number;
 }
 
 // band view
@@ -71,23 +74,36 @@ export interface BandFighter extends Fighter {
   sign: Sign;
   rarity: Rarity;
   gear: Gear;
+  stats: Stats;
+  skill: Skill;
+  cd: number;
 }
 
 // details view
-export interface DetailFighter extends BandFighter {
-  name: string;
+export interface DetailFighter extends BandFighter {   
+  name: string; 
   currentXp: number;
   levelUpXp: number;
   locked: boolean;
-  baseStats: Stats;
+  baseStats?: Stats;
   tribe: Tribe;
   class: Class;
   edgeStats?: Stats;
   edgeBonus?: number;
   lore: string;
-  skill: Skill;
-  cd: number;
   leaderSkill: LeaderSkill;
+  sef: number;
+  maxSef: number;
+}
+
+//fuse fighter view
+export interface FuseFighter extends Fighter {
+  rarity: Rarity;
+  sef: number;
+  tier: Tier;
+  minStats?: Stats;
+  maxStats?: Stats;
+  totalXp: number;
 }
 
 // battle view
