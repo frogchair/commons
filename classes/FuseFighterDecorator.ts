@@ -1,4 +1,4 @@
-import { FuseFighter, Rarity, Tier } from "../interfaces/fighter.interface";
+import { FuseFighter, Rarity, Stats, Tier } from "../interfaces/fighter.interface";
 
 /**
  * Decorator for FuseFighter interface with calculations for both client and server 
@@ -77,6 +77,7 @@ export default class FuseFighterDecorator {
      * @returns levelUpXp required for level
      */
     public xpForLevel(level : number) {
+        if( level > this.currentMaxLevel() || level < 0 ) throw new Error("Invalid level for current Fighter");
         // It can be linked later to some fighter characteristic such as Rarity or Tier.
         // Right now, levelProgression is always the same formula.
         return FuseFighterDecorator.levelProgression(level);
@@ -91,7 +92,43 @@ export default class FuseFighterDecorator {
     public levelForXp(fodderXp : number) : number {
         // It can be linked later to some fighter characteristic such as Rarity or Tier.
         // Right now, levelProgressionReverse is the reverse of a same formula.
-        return FuseFighterDecorator.levelProgressionReverse(this.fighter.totalXp + fodderXp);
+        return Math.min(
+            FuseFighterDecorator.levelProgressionReverse(this.fighter.totalXp + fodderXp), 
+            this.currentMaxLevel()
+        );
+    }
+
+    /**
+     * Calculates levelUp increments for Fighter.
+     * It is currently linear, independant of previous level, and numbers are not rounded.
+     * @returns Stats diff to be applied at every level
+     */
+    public levelUpIncrements() : Stats {
+        var steps = this.currentMaxLevel();
+        return { 
+            hp : (this.fighter.maxStats.hp  - this.fighter.minStats.hp)  / steps,
+            atk: (this.fighter.maxStats.atk - this.fighter.minStats.atk) / steps,
+            def: (this.fighter.maxStats.def - this.fighter.minStats.def) / steps,
+            wis: (this.fighter.maxStats.wis - this.fighter.minStats.wis) / steps,
+            agi: (this.fighter.maxStats.agi - this.fighter.minStats.agi) / steps
+        } as Stats;
+    }
+    
+    /**
+     * Fighter Stats for current level.
+     * @param level for which calculate the stats
+     * @returns Stats
+     */
+    public levelStats(level : number) : Stats {
+        if( level > this.currentMaxLevel() || level < 0 ) throw new Error("Invalid level for current Fighter");
+        var increments = this.levelUpIncrements();
+        return {
+            hp : this.fighter.minStats.hp  + Math.round(increments.hp  * level),
+            atk: this.fighter.minStats.atk + Math.round(increments.atk * level),
+            def: this.fighter.minStats.def + Math.round(increments.def * level),
+            wis: this.fighter.minStats.wis + Math.round(increments.wis * level),
+            agi: this.fighter.minStats.agi + Math.round(increments.agi * level),
+        } as Stats;
     }
     
 }
@@ -109,7 +146,21 @@ function _test() {
       fighter.sef = 4;
       
       console.log(new FuseFighterDecorator(fighter).currentMaxLevel());
+      console.log(new FuseFighterDecorator(fighter).levelUpIncrements());
       
+      //Should match:
+      console.log(fighter.minStats);
+      console.log(new FuseFighterDecorator(fighter).levelStats(0));
+      
+      console.log(new FuseFighterDecorator(fighter).levelStats(1));
+      console.log(new FuseFighterDecorator(fighter).levelStats(17));
+      
+      // Should match:
+      console.log(new FuseFighterDecorator(fighter).levelStats(18));      
+      console.log(fighter.maxStats);
+
+      // Changing rarity for test purposes, other rarity would have different 
+      // min/max Stats, so don't test levelStats() and levelUpIncrements() from here.
       fighter.rarity = Rarity.rare;
       
       console.log(new FuseFighterDecorator(fighter).xpForLevel(15));
