@@ -1,6 +1,4 @@
-import FighterFusion from "../classes/FighterFusion";
 import { Gear } from "./gear.interface";
-import { Player } from "./player.interface";
 import { LeaderSkill, Skill } from "./skill.interface";
 
 export interface Stats {
@@ -69,7 +67,7 @@ export interface Fighter {
 // band view
 export interface BandFighter extends Fighter {
   edge: boolean;
-  currentLevel: number;
+  level: number;
   maxLevel: number;
   sign: Sign;
   rarity: Rarity;
@@ -82,7 +80,7 @@ export interface BandFighter extends Fighter {
 // details view
 export interface DetailFighter extends BandFighter {   
   name: string; 
-  currentXp: number;
+  xp: number;
   levelUpXp: number;
   locked: boolean;
   baseStats?: Stats;
