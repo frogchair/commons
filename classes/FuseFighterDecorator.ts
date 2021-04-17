@@ -10,10 +10,14 @@ export default class FuseFighterDecorator {
     private fighter : FuseFighter;
     // Tier-based min/max level limits.
     private tierLevels : number[];
+    // Level progression formula, obtaining totalXp required for every level.
+    private static levelProgression = (level : number) => { return Math.round( 0.07 + 100 * Math.exp( level * (61/1250) ) ) };
+    // Reverse level progression formula, obtaining level from totalXp.
+    private static levelProgressionReverse = (level : number) => { return Math.floor( Math.log( (level - 0.07) / 100 ) / (61/1250) ) };
 
     constructor(fighter : FuseFighter) {
         this.fighter = fighter;
-        //Extracts the array of min/max limits per rarity from enum in the form: "tX_min1_min2_min3_min4_min5_min6". 
+        // Extracts the array of min/max limits per rarity from enum in the form: "tX_min1_min2_min3_min4_min5_min6". 
         this.tierLevels = this.fighter.tier.substring("tX_".length).split("_").map(d => Number(d));
     }
 
@@ -68,25 +72,27 @@ export default class FuseFighterDecorator {
     }
 
     /**
-     * Calculates requirements based on current SEF, Rarity, and Tier.
-     * @returns levelUpXp requirements
+     * Calculates xp requirements.
+     * @param level for which retrieve the xp requirement
+     * @returns levelUpXp required for level
      */
     public xpForLevel(level : number) {
-        //Define formulas for levelling up units per rarity. Can be changed later
-        var rareFormula = (level : number) => { return Math.round( 0.07 + 100 * Math.exp( level * (61/1250) ) ) };
-        
-        if(this.fighter.rarity == Rarity.rare)
-            return rareFormula(level);
-        return 0;
+        // It can be linked later to some fighter characteristic such as Rarity or Tier.
+        // Right now, levelProgression is always the same formula.
+        return FuseFighterDecorator.levelProgression(level);
     }
 
-    // public levelUpTo(fodderTotalXp : number) : number {
-    //     return 0;
-    // }
-
-    // public levelUpIn(fodderTotalXp : number) : number {
-    //     return 0;
-    // }
+    /**
+     * Estimates the expected level if certain ammount of fodderXp was added to the current fighter.
+     * It considers the current fighter level in estimation.
+     * @param fodderXp total xp selected for fusion.
+     * @returns level which can be equal or higher than current fighter level
+     */
+    public levelForXp(fodderXp : number) : number {
+        // It can be linked later to some fighter characteristic such as Rarity or Tier.
+        // Right now, levelProgressionReverse is the reverse of a same formula.
+        return FuseFighterDecorator.levelProgressionReverse(this.fighter.totalXp + fodderXp);
+    }
     
 }
 
@@ -96,7 +102,7 @@ function _test() {
         tier: Tier.t1_10_18_20_36_30_60,
         minStats: {"hp": 59, "atk": 62, "def": 33, "wis": 52, "agi": 49},
         maxStats: {"hp": 208, "atk": 220, "def": 108, "wis": 180, "agi": 168},
-        totalXp: 10,
+        totalXp: 100,
         sef: 0
       } as FuseFighter;
       
@@ -108,6 +114,10 @@ function _test() {
       
       console.log(new FuseFighterDecorator(fighter).xpForLevel(15));
       console.log(new FuseFighterDecorator(fighter).currentMaxLevel());
+      
+      console.log(new FuseFighterDecorator(fighter).levelForXp(107));
+      console.log(new FuseFighterDecorator(fighter).levelForXp(108));
+      console.log(new FuseFighterDecorator(fighter).levelForXp(109));
       
       fighter.sef = 5;
       
