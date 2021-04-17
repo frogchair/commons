@@ -99,8 +99,8 @@ export interface FuseFighter extends Fighter {
   rarity: Rarity;
   sef: number;
   tier: Tier;
-  minStats?: Stats;
-  maxStats?: Stats;
+  minStats: Stats;
+  maxStats: Stats;
   totalXp: number;
 }
 
