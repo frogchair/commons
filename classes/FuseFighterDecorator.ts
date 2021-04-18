@@ -115,9 +115,9 @@ export default class FuseFighterDecorator {
     }
     
     /**
-     * Fighter Stats for current level.
+     * Stats for current fighter at the informed level.
      * @param level for which calculate the stats
-     * @returns Stats
+     * @returns Stats for fighter at level
      */
     public levelStats(level : number) : Stats {
         if( level > this.currentMaxLevel() || level < 0 ) throw new Error("Invalid level for current Fighter");
