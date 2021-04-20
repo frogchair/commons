@@ -98,13 +98,6 @@ export interface UserFighter {
 // details view
 export interface BandFighter extends CatalogFighter, UserFighter {}
 
-// battle view
-export interface BattleFighter extends Fighter {
-  skill: Skill;
-  battleStats: Stats;
-  battleCd: number;
-}
-
 //fuse fighter view
 export interface FuseFighter extends Fighter {
   rarity: Rarity;
@@ -113,4 +106,11 @@ export interface FuseFighter extends Fighter {
   minStats: Stats;
   maxStats: Stats;
   totalXp: number;
+}
+
+// battle view
+export interface BattleFighter extends Fighter {
+  skill: Skill;
+  battleStats: Stats;
+  battleCd: number;
 }
