@@ -58,7 +58,6 @@ export enum Tier {
 }
 
 export interface Fighter {
-  imageUrl: string;
   skill?: Skill;
   baseCd?: number;
 }
