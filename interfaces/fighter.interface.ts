@@ -46,52 +46,63 @@ export enum SkillLevel {
 }
 
 export enum Tier {
-  t1_10_18_20_36_30_60  = "t1_10_18_20_36_30_60",
-  t2_20_36_30_54_40_80  = "t2_20_36_30_54_40_80",
-  t2_30_54_40_72_50_100 = "t2_30_54_40_72_50_100", 
-  t3_30_54_40_72_60_84  = "t3_30_54_40_72_60_84",   // 0/2
-  t3_40_72_50_90_70_98  = "t3_40_72_50_90_70_98",   // 0/2
-  t3_30_54_40_72_60_96  = "t3_30_54_40_72_60_96",   // 0/3
-  t3_30_54_40_72_60_108 = "t3_30_54_40_72_60_108",  // 0/4
-  t3_40_72_50_90_70_112 = "t3_40_72_50_90_70_112",  // 0/3
-  t3_40_72_50_90_70_126 = "t3_40_72_50_90_70_126",  // 0/4
+  t1_10_18_20_36_30_60 = "t1_10_18_20_36_30_60",
+  t2_20_36_30_54_40_80 = "t2_20_36_30_54_40_80",
+  t2_30_54_40_72_50_100 = "t2_30_54_40_72_50_100",
+  t3_30_54_40_72_60_84 = "t3_30_54_40_72_60_84", // 0/2
+  t3_40_72_50_90_70_98 = "t3_40_72_50_90_70_98", // 0/2
+  t3_30_54_40_72_60_96 = "t3_30_54_40_72_60_96", // 0/3
+  t3_30_54_40_72_60_108 = "t3_30_54_40_72_60_108", // 0/4
+  t3_40_72_50_90_70_112 = "t3_40_72_50_90_70_112", // 0/3
+  t3_40_72_50_90_70_126 = "t3_40_72_50_90_70_126", // 0/4
 }
 
-// home view
 export interface Fighter {
-  id: number;
   imageUrl: string;
-  slot: number;
+  skill?: Skill;
+  baseCd?: number;
 }
 
-// band view
-export interface BandFighter extends Fighter {
-  edge: boolean;
-  level: number;
-  maxLevel: number;
-  sign: Sign;
-  rarity: Rarity;
-  gear: Gear;
+// catalog view
+export interface CatalogFighter extends Fighter {
+  catalogId: number;
+  name: string;
+  maxSef: number;
   stats: Stats;
-  skill: Skill;
-  cd: number;
+  rarity: Rarity;
+  tribe: Tribe;
+  sign: Sign;
+  class: Class;
+  lore: string;
+  leaderSkill?: LeaderSkill;
+  tradeable: boolean;
+}
+
+// User fighter response
+export interface UserFighter {
+  id: number;
+  catalogId: number;
+  currentXp: number;
+  levelUpXp: number;
+  currentLevel: number;
+  maxLevel: number;
+  currentSef: number;
+  currentStats: Stats;
+  locked: boolean;
+  edgeStats?: Stats;
+  edgeBonus?: number;
+  gear?: Gear;
+  slot?: number;
 }
 
 // details view
-export interface DetailFighter extends BandFighter {   
-  name: string; 
-  xp: number;
-  levelUpXp: number;
-  locked: boolean;
-  baseStats?: Stats;
-  tribe: Tribe;
-  class: Class;
-  edgeStats?: Stats;
-  edgeBonus?: number;
-  lore: string;
-  leaderSkill: LeaderSkill;
-  sef: number;
-  maxSef: number;
+export interface BandFighter extends CatalogFighter, UserFighter {}
+
+// battle view
+export interface BattleFighter extends Fighter {
+  skill: Skill;
+  battleStats: Stats;
+  battleCd: number;
 }
 
 //fuse fighter view
@@ -102,11 +113,4 @@ export interface FuseFighter extends Fighter {
   minStats: Stats;
   maxStats: Stats;
   totalXp: number;
-}
-
-// battle view
-export interface BattleFighter extends Fighter {
-  skill: Skill;
-  battleStats: Stats;
-  battleCd: number;
 }
