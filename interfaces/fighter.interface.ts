@@ -57,13 +57,8 @@ export enum Tier {
   t3_40_72_50_90_70_126 = "t3_40_72_50_90_70_126", // 0/4
 }
 
-export interface Fighter {
-  skill?: Skill;
-  baseCd?: number;
-}
-
 // catalog view
-export interface CatalogFighter extends Fighter {
+export interface CatalogFighter {
   catalogId: number;
   name: string;
   maxSef: number;
@@ -73,6 +68,8 @@ export interface CatalogFighter extends Fighter {
   sign: Sign;
   class: Class;
   lore: string;
+  skill?: Skill;
+  baseCd?: number;
   leaderSkill?: LeaderSkill;
   tradeable: boolean;
 }
@@ -87,6 +84,7 @@ export interface UserFighter {
   maxLevel: number;
   currentSef: number;
   currentStats: Stats;
+  currentCd: number;
   locked: boolean;
   edgeStats?: Stats;
   edgeBonus?: number;
@@ -98,7 +96,9 @@ export interface UserFighter {
 export interface BandFighter extends CatalogFighter, UserFighter {}
 
 //fuse fighter view
-export interface FuseFighter extends Fighter {
+export interface FuseFighter {
+  id: number;
+  catalogId: number;
   rarity: Rarity;
   sef: number;
   tier: Tier;
@@ -108,8 +108,9 @@ export interface FuseFighter extends Fighter {
 }
 
 // battle view
-export interface BattleFighter extends Fighter {
-  skill: Skill;
+export interface BattleFighter {
   battleStats: Stats;
-  battleCd: number;
+  skill?: Skill;
+  baseCd?: number;
+  battleCd?: number;
 }
