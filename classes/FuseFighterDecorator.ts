@@ -68,7 +68,7 @@ export default class FuseFighterDecorator {
      */
     public currentMaxLevel() {
         var [ minIndex, maxIndex, denominator ] = this.tierLimits();
-        return this.tierLevels[minIndex] + (this.fighter.sef) * ( ( this.tierLevels[maxIndex] - this.tierLevels[minIndex] ) / denominator );
+        return this.tierLevels[minIndex] + (this.fighter.currentSef) * ( ( this.tierLevels[maxIndex] - this.tierLevels[minIndex] ) / denominator );
     }
 
     /**
@@ -140,10 +140,10 @@ function _test() {
         minStats: {"hp": 59, "atk": 62, "def": 33, "wis": 52, "agi": 49},
         maxStats: {"hp": 208, "atk": 220, "def": 108, "wis": 180, "agi": 168},
         totalXp: 100,
-        sef: 0
+        currentSef: 0
       } as FuseFighter;
       
-      fighter.sef = 4;
+      fighter.currentSef = 4;
       
       console.log(new FuseFighterDecorator(fighter).currentMaxLevel());
       console.log(new FuseFighterDecorator(fighter).levelUpIncrements());
@@ -170,7 +170,7 @@ function _test() {
       console.log(new FuseFighterDecorator(fighter).levelForXp(108));
       console.log(new FuseFighterDecorator(fighter).levelForXp(109));
       
-      fighter.sef = 5;
+      fighter.currentSef = 5;
       
       console.log(new FuseFighterDecorator(fighter).currentMaxLevel());
 }
