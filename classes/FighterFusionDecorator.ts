@@ -1,13 +1,17 @@
-import { FuseFighter, Rarity, Stats, Tier } from "../interfaces/fighter.interface";
+import { CatalogFighter, FighterFusion, Rarity, Stats, Tier } from "../interfaces/fighter.interface";
 
 /**
- * Decorator for FuseFighter interface with calculations for both client and server 
+ * Decorator for FighterFusion interface with calculations for both client and server 
  * side functionalities related to Fuse Fighter screen.
  */
-export default class FuseFighterDecorator {
+export default class FighterFusionDecorator {
 
     // Fighter reference to be decorated.
-    private fighter : FuseFighter;
+    private fighter : CatalogFighter;
+    // Fighter's current SEF.
+    private currentSef : number;
+    // Fighter's total XP since level 0.
+    private totalXp : number;
     // Tier-based min/max level limits.
     private tierLevels : number[];
     // Level progression formula, obtaining totalXp required for every level.
@@ -15,8 +19,10 @@ export default class FuseFighterDecorator {
     // Reverse level progression formula, obtaining level from totalXp.
     private static levelProgressionReverse = (level : number) => { return Math.floor( Math.log( (level - 0.07) / 100 ) / (61/1250) ) };
 
-    constructor(fighter : FuseFighter) {
-        this.fighter = fighter;
+    constructor(fighterFusion : FighterFusion) {
+        this.fighter = fighterFusion.fighter;
+        this.currentSef = fighterFusion.currentSef;        
+        this.totalXp = fighterFusion.totalXp;
         // Extracts the array of min/max limits per rarity from enum in the form: "tX_min1_min2_min3_min4_min5_min6". 
         this.tierLevels = this.fighter.tier.substring("tX_".length).split("_").map(d => Number(d));
     }
@@ -68,7 +74,7 @@ export default class FuseFighterDecorator {
      */
     public currentMaxLevel() {
         var [ minIndex, maxIndex, denominator ] = this.tierLimits();
-        return this.tierLevels[minIndex] + (this.fighter.currentSef) * ( ( this.tierLevels[maxIndex] - this.tierLevels[minIndex] ) / denominator );
+        return this.tierLevels[minIndex] + (this.currentSef) * ( ( this.tierLevels[maxIndex] - this.tierLevels[minIndex] ) / denominator );
     }
 
     /**
@@ -80,7 +86,7 @@ export default class FuseFighterDecorator {
         if( level > this.currentMaxLevel() || level < 0 ) throw new Error("Invalid level for current Fighter");
         // It can be linked later to some fighter characteristic such as Rarity or Tier.
         // Right now, levelProgression is always the same formula.
-        return FuseFighterDecorator.levelProgression(level);
+        return FighterFusionDecorator.levelProgression(level);
     }
 
     /**
@@ -93,7 +99,7 @@ export default class FuseFighterDecorator {
         // It can be linked later to some fighter characteristic such as Rarity or Tier.
         // Right now, levelProgressionReverse is the reverse of a same formula.
         return Math.min(
-            FuseFighterDecorator.levelProgressionReverse(this.fighter.totalXp + fodderXp), 
+            FighterFusionDecorator.levelProgressionReverse(this.totalXp + fodderXp), 
             this.currentMaxLevel()
         );
     }
@@ -134,44 +140,46 @@ export default class FuseFighterDecorator {
 }
 
 function _test() {
-    var fighter = {
-        rarity: Rarity.common,
-        tier: Tier.t1_10_18_20_36_30_60,
-        minStats: {"hp": 59, "atk": 62, "def": 33, "wis": 52, "agi": 49},
-        maxStats: {"hp": 208, "atk": 220, "def": 108, "wis": 180, "agi": 168},
+    var fighterFusion = {
+        fighter: {
+            rarity: Rarity.common,
+            tier: Tier.t1_10_18_20_36_30_60,
+            minStats: {"hp": 59, "atk": 62, "def": 33, "wis": 52, "agi": 49},
+            maxStats: {"hp": 208, "atk": 220, "def": 108, "wis": 180, "agi": 168},
+        },
         totalXp: 100,
         currentSef: 0
-      } as FuseFighter;
+      } as FighterFusion;
       
-      fighter.currentSef = 4;
+      fighterFusion.currentSef = 4;
       
-      console.log(new FuseFighterDecorator(fighter).currentMaxLevel());
-      console.log(new FuseFighterDecorator(fighter).levelUpIncrements());
+      console.log(new FighterFusionDecorator(fighterFusion).currentMaxLevel());
+      console.log(new FighterFusionDecorator(fighterFusion).levelUpIncrements());
       
       //Should match:
-      console.log(fighter.minStats);
-      console.log(new FuseFighterDecorator(fighter).levelStats(0));
+      console.log(fighterFusion.fighter.minStats);
+      console.log(new FighterFusionDecorator(fighterFusion).levelStats(0));
       
-      console.log(new FuseFighterDecorator(fighter).levelStats(1));
-      console.log(new FuseFighterDecorator(fighter).levelStats(17));
+      console.log(new FighterFusionDecorator(fighterFusion).levelStats(1));
+      console.log(new FighterFusionDecorator(fighterFusion).levelStats(17));
       
       // Should match:
-      console.log(new FuseFighterDecorator(fighter).levelStats(18));      
-      console.log(fighter.maxStats);
+      console.log(new FighterFusionDecorator(fighterFusion).levelStats(18));      
+      console.log(fighterFusion.fighter.maxStats);
 
       // Changing rarity for test purposes, other rarity would have different 
       // min/max Stats, so don't test levelStats() and levelUpIncrements() from here.
-      fighter.rarity = Rarity.rare;
+      fighterFusion.fighter.rarity = Rarity.rare;
       
-      console.log(new FuseFighterDecorator(fighter).xpForLevel(15));
-      console.log(new FuseFighterDecorator(fighter).currentMaxLevel());
+      console.log(new FighterFusionDecorator(fighterFusion).xpForLevel(15));
+      console.log(new FighterFusionDecorator(fighterFusion).currentMaxLevel());
       
-      console.log(new FuseFighterDecorator(fighter).levelForXp(107));
-      console.log(new FuseFighterDecorator(fighter).levelForXp(108));
-      console.log(new FuseFighterDecorator(fighter).levelForXp(109));
+      console.log(new FighterFusionDecorator(fighterFusion).levelForXp(107));
+      console.log(new FighterFusionDecorator(fighterFusion).levelForXp(108));
+      console.log(new FighterFusionDecorator(fighterFusion).levelForXp(109));
       
-      fighter.currentSef = 5;
+      fighterFusion.currentSef = 5;
       
-      console.log(new FuseFighterDecorator(fighter).currentMaxLevel());
+      console.log(new FighterFusionDecorator(fighterFusion).currentMaxLevel());
 }
 _test();

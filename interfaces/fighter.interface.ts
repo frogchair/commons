@@ -62,7 +62,9 @@ export interface CatalogFighter {
   catalogId: number;
   name: string;
   maxSef: number;
-  stats: Stats;
+  tier: Tier;
+  minStats: Stats;
+  maxStats: Stats;
   rarity: Rarity;
   tribe: Tribe;
   sign: Sign;
@@ -96,13 +98,10 @@ export interface UserFighter {
 export interface BandFighter extends CatalogFighter, UserFighter {}
 
 //fuse fighter view
-export interface FuseFighter {
+export interface FighterFusion {
+  fighter: CatalogFighter;
   currentSef: number;
   totalXp: number;
-  tier: Tier;
-  minStats: Stats;
-  maxStats: Stats;
-  rarity: Rarity;
 }
 
 // battle view
