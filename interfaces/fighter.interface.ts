@@ -102,6 +102,7 @@ export interface FighterFusion {
   fighter: CatalogFighter;
   currentSef: number;
   totalXp: number;
+  evolutionStep: number;
 }
 
 // battle view

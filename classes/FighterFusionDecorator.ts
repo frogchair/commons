@@ -8,64 +8,33 @@ export default class FighterFusionDecorator {
 
     // Fighter reference to be decorated.
     private fighter : CatalogFighter;
+    
     // Fighter's current SEF.
     private currentSef : number;
+
     // Fighter's total XP since level 0.
     private totalXp : number;
+
+    // Fighter's evolution step 0, 1 or 2.
+    private evolutionStep: number;
+
     // Tier-based min/max level limits.
     private tierLevels : number[];
+
     // Level progression formula, obtaining totalXp required for every level.
     private static levelProgression = (level : number) => { return Math.round( 0.07 + 100 * Math.exp( level * (61/1250) ) ) };
+    
     // Reverse level progression formula, obtaining level from totalXp.
     private static levelProgressionReverse = (level : number) => { return Math.floor( Math.log( (level - 0.07) / 100 ) / (61/1250) ) };
+
 
     constructor(fighterFusion : FighterFusion) {
         this.fighter = fighterFusion.fighter;
         this.currentSef = fighterFusion.currentSef;        
         this.totalXp = fighterFusion.totalXp;
-        // Extracts the array of min/max limits per rarity from enum in the form: "tX_min1_min2_min3_min4_min5_min6". 
+        this.evolutionStep = fighterFusion.evolutionStep;        
+        // Extracts the array of min/max limits per evolutionStep from enum in the form: "tX_min1_min2_min3_min4_min5_min6". 
         this.tierLevels = this.fighter.tier.substring("tX_".length).split("_").map(d => Number(d));
-    }
-
-    /**
-     * Based on current Rarity and Tier, calculates tierLevels array indexes.
-     * @returns minIndex in tierLevels for current fighter
-     * @returns maxIndex in tierLevels for current fighter
-     * @returns denominator for levelUp formulas
-     */
-    private tierLimits() {
-        
-        var secondRarity : Rarity = Rarity.uncommon;
-        var finalRarity : Rarity = Rarity.rare;
-        var minIndex = 0;
-        var maxIndex = 1;
-        var denominator = 4;
-
-        if (this.fighter.tier.startsWith("t2")) {
-            secondRarity = Rarity.rare;
-            finalRarity = Rarity.epic;
-        } else if (this.fighter.tier.startsWith("t3")) {
-            secondRarity = Rarity.epic;
-            finalRarity = Rarity.legendary;
-        }
-
-        if(this.fighter.rarity == secondRarity) {            
-            minIndex = 2;
-            maxIndex = 3;
-        } else if(this.fighter.rarity == finalRarity) {
-            minIndex = 4;
-            maxIndex = 5;
-            if(this.fighter.tier == Tier.t3_30_54_40_72_60_84 || this.fighter.tier == Tier.t3_40_72_50_90_70_98) {
-                denominator = 2;
-            } else if(this.fighter.tier == Tier.t3_30_54_40_72_60_96 || this.fighter.tier == Tier.t3_40_72_50_90_70_112) {
-                denominator = 3;
-            } else if(this.fighter.tier == Tier.t3_30_54_40_72_60_108 || this.fighter.tier == Tier.t3_40_72_50_90_70_126) {
-                denominator = 4;
-            } else {
-                denominator = 5;
-            }
-        }
-        return [ minIndex, maxIndex, denominator ];
     }
 
     /**
@@ -73,8 +42,12 @@ export default class FighterFusionDecorator {
      * @returns maxLevel for current fighter
      */
     public currentMaxLevel() {
-        var [ minIndex, maxIndex, denominator ] = this.tierLimits();
-        return this.tierLevels[minIndex] + (this.currentSef) * ( ( this.tierLevels[maxIndex] - this.tierLevels[minIndex] ) / denominator );
+        // Evolution step 0: consider tierLevels[0] and tierLevels[1]; 
+        // evolution step 1: consider tierLevels[2] and tierLevels[3]...
+        var minIndex = 2 * this.evolutionStep;
+        var maxIndex = 2 * this.evolutionStep + 1;
+        return this.tierLevels[minIndex] + (this.currentSef) 
+                * ( ( this.tierLevels[maxIndex] - this.tierLevels[minIndex] ) / this.fighter.maxSef );
     }
 
     /**
@@ -142,15 +115,18 @@ export default class FighterFusionDecorator {
 function _test() {
     var fighterFusion = {
         fighter: {
-            rarity: Rarity.common,
             tier: Tier.t1_10_18_20_36_30_60,
             minStats: {"hp": 59, "atk": 62, "def": 33, "wis": 52, "agi": 49},
             maxStats: {"hp": 208, "atk": 220, "def": 108, "wis": 180, "agi": 168},
+            maxSef: 4
         },
         totalXp: 100,
-        currentSef: 0
+        currentSef: 0,
+        evolutionStep: 0
       } as FighterFusion;
       
+      console.log(new FighterFusionDecorator(fighterFusion).currentMaxLevel());
+
       fighterFusion.currentSef = 4;
       
       console.log(new FighterFusionDecorator(fighterFusion).currentMaxLevel());
@@ -167,10 +143,11 @@ function _test() {
       console.log(new FighterFusionDecorator(fighterFusion).levelStats(18));      
       console.log(fighterFusion.fighter.maxStats);
 
-      // Changing rarity for test purposes, other rarity would have different 
+      // Changing evolutionStep for test purposes, other evolutionStep would have different 
       // min/max Stats, so don't test levelStats() and levelUpIncrements() from here.
-      fighterFusion.fighter.rarity = Rarity.rare;
-      
+      fighterFusion.evolutionStep = 2;
+      fighterFusion.fighter.maxSef = 5;
+
       console.log(new FighterFusionDecorator(fighterFusion).xpForLevel(15));
       console.log(new FighterFusionDecorator(fighterFusion).currentMaxLevel());
       
