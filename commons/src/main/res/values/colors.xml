@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="fighter_stats_xana">#64d2e6</color>
+    <color name="fighter_stats_hemi">#ff6833</color>
+    <color name="fighter_stats_theri">#b3cd4e</color>
+
+    <color name="fighter_stats_air">#a4c4c3</color>
+    <color name="fighter_stats_fire">#ff2a00</color>
+    <color name="fighter_stats_earth">#8abe14</color>
+    <color name="fighter_stats_water">#7692dd</color>
+    <color name="fighter_stats_lightning">#f3ea00</color>
+
+</resources>
