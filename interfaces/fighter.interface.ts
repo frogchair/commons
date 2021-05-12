@@ -28,7 +28,7 @@ export enum Class {
   guru = "guru",
   rogue = "rogue",
   scout = "scout",
-  warlock = "warlcok",
+  warlock = "warlock",
 }
 
 export enum Rarity {
