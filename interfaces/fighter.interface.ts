@@ -74,12 +74,14 @@ export interface CatalogFighter {
   baseCd?: number;
   leaderSkill?: LeaderSkill;
   tradeable: boolean;
+  evolutionStep: number;
 }
 
 // User fighter response
 export interface UserFighter {
   id: number;
   catalogId: number;
+  totalXp: number;
   currentXp: number;
   levelUpXp: number;
   currentLevel: number;
@@ -96,14 +98,6 @@ export interface UserFighter {
 
 // details view
 export interface BandFighter extends CatalogFighter, UserFighter {}
-
-//fuse fighter view
-export interface FighterFusion {
-  fighter: CatalogFighter;
-  currentSef: number;
-  totalXp: number;
-  evolutionStep: number;
-}
 
 // battle view
 export interface BattleFighter {

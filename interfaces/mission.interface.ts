@@ -2,7 +2,7 @@ export interface Mission {
   id: number
   code: string
   title: string
-  steps: number
+  steps?: number
   background?: string
   rewardPreview?: string
   status: MissionStatus
