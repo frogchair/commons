@@ -21,3 +21,31 @@ export enum CrownType {
   silver = "silver",
   bronze = "bronze",
 }
+
+export interface Step {
+  enCountdown: number;
+  currentProgress: number;
+  encounterType: EncounterType;
+  currentMission?: number;
+}
+
+export interface EncounterTypePercentages{
+  percentages: number,
+  encounterType: string
+}
+
+export enum EncounterType{
+  empty = "empty",
+  serendipity = "serendipity" ,  
+  battle = "battle",
+  end = "end"
+}
+  
+export enum EncounterPercentages{
+  empty = 48,
+  serendipity = 2 ,  
+  battle = 50,
+  end = 0
+}
+
+  
