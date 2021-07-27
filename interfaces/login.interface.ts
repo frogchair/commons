@@ -9,6 +9,6 @@ export enum AuthenticationError {
 }
 export interface Login {
     success: boolean,
-    message: AuthenticationError | Player,    
+    message: AuthenticationError | Player,
     token: string | null
 }
