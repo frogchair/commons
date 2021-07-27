@@ -1,5 +1,4 @@
 import { Player } from "../../models/Player";
-import { HTTPError, HTTPErrorCode } from "./error.interface";
 
 export enum AuthenticationError {
     ACCESS_TOKEN_MISSING = "ACCESS_TOKEN_MISSING",
