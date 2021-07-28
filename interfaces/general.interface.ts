@@ -3,6 +3,14 @@ export interface APIResponse {
     message: ErrorMessage | Object
 }
 
+export enum HTTPVerb {
+    POST = "POST",
+    PUT = "PUT",
+    PATCH = "PATCH",
+    GET = "GET",
+    DELETE = "DELETE"
+}
+
 export enum HTTPCode {
     SUCCESS = 200,
     SERVER_ERROR = 500,
