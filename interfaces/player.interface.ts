@@ -26,7 +26,6 @@ export interface Step {
   enCountdown: number;
   currentProgress: number;
   encounterType: EncounterType;
-  currentMission?: number;
 }
 
 export interface EncounterTypePercentages{
@@ -48,4 +47,11 @@ export enum EncounterPercentages{
   end = 0
 }
 
+
+export enum StepMessages{
+  PLAYER_UNDEFINED = "Player cant be undefined !",
+  NO_CURRENT_MISSION = "Choose a mission first !",
+  NOT_ENOUGH_ENERGY = "Not enough energy !",
+  ENERGY_REPLENISHED = " energy replenished !"
+ }
   
