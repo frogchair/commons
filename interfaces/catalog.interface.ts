@@ -1,6 +1,7 @@
 import { CatalogFighter } from "./fighter.interface";
-
+import { ErrorMessage } from "./general.interface";
 export interface CatalogPage {
-  lastPage: number;
-  data: CatalogFighter[];
+  success: boolean,
+  message: ErrorMessage | CatalogFighter[],
+  lastPage: number
 }
