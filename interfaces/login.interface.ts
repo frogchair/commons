@@ -5,7 +5,7 @@ export enum AuthenticationError {
     ACCESS_TOKEN_EXPIRED = "ACCESS_TOKEN_EXPIRED",
     GOOGLE_AUTH_EXPIRED = "GOOGLE_AUTH_EXPIRED", 
     USER_NOT_FOUND = "USER_NOT_FOUND",
-    ERROR_CODE = 400
+    ERROR_CODE = 401
 }
 export interface Login {
     success: boolean,
