@@ -1,6 +1,6 @@
 export interface APIResponse {
     success: boolean,
-    message: ErrorMessage | Object
+    message: ErrorMessage | Object | null
 }
 
 export enum HTTPVerb {
@@ -13,10 +13,13 @@ export enum HTTPVerb {
 
 export enum HTTPCode {
     SUCCESS = 200,
-    SERVER_ERROR = 500,
+    CREATED = 201,
+    NO_CONTENT = 204,    
     BAD_REQUEST = 400,
     NOT_FOUND = 404,
-    CONFLICT = 409
+    NOT_ALLOWED = 405,
+    CONFLICT = 409,
+    SERVER_ERROR = 500
 }
 
 export enum ErrorMessage {
@@ -27,7 +30,7 @@ export enum ErrorMessage {
     INCOMPLETE_FORM = 'INCOMPLETE_FORM',
     ID_NOT_EMPTY = 'ID_NOT_EMPTY',
     ID_NOT_PROVIDED = 'ID_NOT_PROVIDED',
-    ID_NOT_VALID = 'ID_NOT_VALID'
+    ID_NOT_FOUND = 'ID_NOT_FOUND'
 }
 
 /**
@@ -49,8 +52,8 @@ export class HTTPError {
                                                  HTTPCode.CONFLICT);
     static readonly ID_NOT_PROVIDED = new HTTPError(ErrorMessage.ID_NOT_PROVIDED, 
                                                     HTTPCode.BAD_REQUEST);
-    static readonly ID_NOT_VALID = new HTTPError(ErrorMessage.ID_NOT_VALID, 
-                                                 HTTPCode.BAD_REQUEST);
+    static readonly ID_NOT_FOUND = new HTTPError(ErrorMessage.ID_NOT_FOUND, 
+                                                 HTTPCode.NOT_FOUND);
     // private constructor disallows future modifications
     private constructor(public readonly message: string, public readonly code: HTTPCode) {
     }
