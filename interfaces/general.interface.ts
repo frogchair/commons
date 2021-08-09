@@ -1,6 +1,7 @@
 export interface APIResponse {
     success: boolean,
-    message: ErrorMessage | Object | null
+    message: ErrorMessage | Object | null,
+    token: string | null
 }
 
 export enum HTTPVerb {
@@ -16,6 +17,7 @@ export enum HTTPCode {
     CREATED = 201,
     NO_CONTENT = 204,    
     BAD_REQUEST = 400,
+    UNAUTHORIZED = 401,
     NOT_FOUND = 404,
     NOT_ALLOWED = 405,
     CONFLICT = 409,
@@ -30,7 +32,11 @@ export enum ErrorMessage {
     INCOMPLETE_FORM = 'INCOMPLETE_FORM',
     ID_NOT_EMPTY = 'ID_NOT_EMPTY',
     ID_NOT_PROVIDED = 'ID_NOT_PROVIDED',
-    ID_NOT_FOUND = 'ID_NOT_FOUND'
+    ID_NOT_FOUND = 'ID_NOT_FOUND',
+    ACCESS_TOKEN_MISSING = "ACCESS_TOKEN_MISSING",
+    ACCESS_TOKEN_EXPIRED = "ACCESS_TOKEN_EXPIRED",
+    GOOGLE_AUTH_EXPIRED = "GOOGLE_AUTH_EXPIRED", 
+    USER_NOT_FOUND = "USER_NOT_FOUND"
 }
 
 /**
@@ -54,6 +60,14 @@ export class HTTPError {
                                                     HTTPCode.BAD_REQUEST);
     static readonly ID_NOT_FOUND = new HTTPError(ErrorMessage.ID_NOT_FOUND, 
                                                  HTTPCode.NOT_FOUND);
+    static readonly ACCESS_TOKEN_MISSING = new HTTPError(ErrorMessage.ACCESS_TOKEN_MISSING,
+                                                         HTTPCode.UNAUTHORIZED);
+    static readonly ACCESS_TOKEN_EXPIRED = new HTTPError(ErrorMessage.ACCESS_TOKEN_EXPIRED,
+                                                         HTTPCode.UNAUTHORIZED);
+    static readonly GOOGLE_AUTH_EXPIRED = new HTTPError(ErrorMessage.GOOGLE_AUTH_EXPIRED,
+                                                        HTTPCode.UNAUTHORIZED);
+    static readonly USER_NOT_FOUND = new HTTPError(ErrorMessage.USER_NOT_FOUND,
+                                                   HTTPCode.UNAUTHORIZED);
     // private constructor disallows future modifications
     private constructor(public readonly message: string, public readonly code: HTTPCode) {
     }
