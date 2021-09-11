@@ -52,6 +52,7 @@ export enum StepMessages{
   PLAYER_UNDEFINED = "Player cant be undefined !",
   NO_CURRENT_MISSION = "Choose a mission first !",
   NOT_ENOUGH_ENERGY = "Not enough energy !",
-  ENERGY_REPLENISHED = " energy replenished !"
+  ENERGY_REPLENISHED = "Energy replenished !",
+  MISSION_IS_LOCKED = "Mission is locked !"
  }
   
