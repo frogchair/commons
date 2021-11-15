@@ -55,7 +55,8 @@ export enum StepMessages {
     NO_CURRENT_MISSION = "Choose a mission first !",
     NOT_ENOUGH_ENERGY = "Not enough energy !",
     ENERGY_REPLENISHED = "Energy replenished !",
-    MISSION_IS_LOCKED = "Mission is locked !",
-    WONT_HAVE_EFFECT = "Wont have any effect !"
+    WONT_HAVE_EFFECT = "Wont have any effect !",
+    MISSION_IS_LOCKED = "Mission is locked !"
+    
 }
   
