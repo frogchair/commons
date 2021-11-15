@@ -48,11 +48,14 @@ export enum EncounterPercentages{
 }
 
 
-export enum StepMessages{
-  PLAYER_UNDEFINED = "Player cant be undefined !",
-  NO_CURRENT_MISSION = "Choose a mission first !",
-  NOT_ENOUGH_ENERGY = "Not enough energy !",
-  ENERGY_REPLENISHED = "Energy replenished !",
-  MISSION_IS_LOCKED = "Mission is locked !"
- }
+
+
+export enum StepMessages {
+    PLAYER_UNDEFINED = "Player cant be undefined !",
+    NO_CURRENT_MISSION = "Choose a mission first !",
+    NOT_ENOUGH_ENERGY = "Not enough energy !",
+    ENERGY_REPLENISHED = "Energy replenished !",
+    MISSION_IS_LOCKED = "Mission is locked !",
+    WONT_HAVE_EFFECT = "Wont have any effect !"
+}
   
