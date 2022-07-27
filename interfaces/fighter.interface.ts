@@ -39,12 +39,6 @@ export enum Rarity {
   legendary = "legendary",
 }
 
-export enum SkillLevel {
-  novice = "novice",
-  adept = "adept",
-  elite = "elite",
-}
-
 export enum Tier {
   t1_10_18_20_36_30_60 = "t1_10_18_20_36_30_60",
   t2_20_36_30_54_40_80 = "t2_20_36_30_54_40_80",
@@ -71,7 +65,7 @@ export interface CatalogFighter {
   class: Class;
   lore: string;
   skill?: Skill;
-  baseCd?: number;
+  baseCd?: number;  // needs refactoring based on Skill interface
   leaderSkill?: LeaderSkill;
   tradeable: boolean;
   evolutionStep: number;
@@ -102,7 +96,5 @@ export interface BandFighter extends CatalogFighter, UserFighter {}
 // battle view
 export interface BattleFighter {
   battleStats: Stats;
-  skill?: Skill;
-  baseCd?: number;
   battleCd?: number;
 }
